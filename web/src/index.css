@@ -1,0 +1,27 @@
+h2 {
+  color: black;
+}
+
+.template-list {
+  border-color: red;
+  border-style: solid;
+  display: flex;
+}
+
+.template-card {
+  height: 200px;
+  width: 200px;
+  border-color: black;
+  border-style: solid;
+}
+
+.template {
+  margin: auto;
+  width: 50%;
+  border-color: black;
+  border-style: solid;
+}
+
+.btn-submit-template {
+  background-color: red;
+}
