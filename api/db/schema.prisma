@@ -8,8 +8,8 @@ generator client {
   binaryTargets = "native"
 }
 
-model ChecklistTemplate {
-  id    Int    @id @default(autoincrement())
-  title String @unique
-  tasks String
+model task {
+  id        Int     @id @default(autoincrement())
+  body      String
+  completed Boolean
 }

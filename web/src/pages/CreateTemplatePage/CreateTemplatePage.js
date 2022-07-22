@@ -1,60 +1,89 @@
+import { Form, TextField, Submit } from '@redwoodjs/forms'
 import { Link, routes } from '@redwoodjs/router'
-import { MetaTags } from '@redwoodjs/web'
+import { MetaTags, useMutation } from '@redwoodjs/web'
+
+const CREATE_TASK = gql`
+  mutation CreateTaskMutation($input: CreateTaskInput!) {
+    createTask(input: $input) {
+      id
+    }
+  }
+`
 
 const CreateTemplatePage = () => {
+
+  const [create] = useMutation(CREATE_TASK)
+
+  const onSubmit = (data) => {
+    console.log(data)
+    create({
+      variables: {
+        input: {
+          body: data.name,
+          completed: false
+        }
+      }
+    })
+  }
+
   return (
     <>
       <MetaTags title="CreateTemplate" description="CreateTemplate page" />
 
       <h1>Create a new template</h1>
 
-      <div class="template">
-        <div class="template-header">
-          <h2 class="template-title">Building a car</h2>
+      <div className="template">
+        <div className="template-header">
+          <h2 className="template-title">Building a car</h2>
         </div>
 
-        <div class="template-body">
-          <div class="all-tasks">
-            <div class="task">
+        <div className="template-body">
+          <div className="all-tasks">
+            <div className="task">
               <input type="checkbox" id="task-1"></input>
-              <label for="task-1">
-                <span class="custom-checkbox"></span>
+              <label htmlFor="task-1">
+                <span className="custom-checkbox"></span>
                 Invent the wheel
               </label>
             </div>
 
-            <div class="task">
+            <div className="task">
               <input type="checkbox" id="task-2"></input>
-              <label for="task-2">
-                <span class="custom-checkbox"></span>
+              <label htmlFor="task-2">
+                <span className="custom-checkbox"></span>
                 Invent the wheel
               </label>
             </div>
 
-            <div class="task">
+            <div className="task">
               <input type="checkbox" id="task-3"></input>
-              <label for="task-3">
-                <span class="custom-checkbox"></span>
+              <label htmlFor="task-3">
+                <span className="custom-checkbox"></span>
                 Invent the wheel
               </label>
             </div>
           </div>
 
-          <div class="new-task-creator">
-            <form class="create-task-form" action="">
+          <div className="new-task-creator">
+            <form className="create-task-form" action="">
               <input
                 type="text"
-                class="new-task"
+                className="new-task"
                 placeholder="new task name"
                 aria-label="new task name"
               />
-              <button class="btn-task" aria-label="create new task">+</button>
+              <button className="btn-task" aria-label="create new task">+</button>
             </form>
           </div>
+
+          <Form onSubmit={onSubmit}>
+            <TextField name="name" />
+            <Submit>+</Submit>
+          </Form>
         </div>
       </div>
 
-      <button class="btn-submit-template" aria-label="create new task">Submit</button>
+      <button className="btn-submit-template" aria-label="create new task">Submit</button>
     </>
   )
 }
