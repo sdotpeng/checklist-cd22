@@ -21,6 +21,7 @@ const CreateTemplatePage = () => {
       variables: {
         input: {
           body: data.name,
+          description: data.description,
           completed: false
         }
       }
@@ -42,7 +43,8 @@ const CreateTemplatePage = () => {
           <TaskListCell />
 
           <Form className="new-task-creator" onSubmit={onSubmit}>
-            <TextField name="name" />
+            <TextField name="name" placeholder="Enter task here"/>
+            <TextField name="description" placeholder="Enter description here"/>
             <Submit>+</Submit>
           </Form>
         </div>

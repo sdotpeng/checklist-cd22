@@ -2,6 +2,7 @@ export const QUERY = gql`
 query FindTaskListQuery {
   taskList: tasks {
     body
+    description
   }
 }
 `
@@ -22,6 +23,8 @@ export const Success = ({ taskList }) => {
         <label htmlFor="task-1">
           <span className="custom-checkbox"></span>
           {taskList.body}
+          <br/>
+          {taskList.description}
         </label>
       </div>
     </taskList>

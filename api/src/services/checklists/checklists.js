@@ -28,8 +28,3 @@ export const deleteChecklist = ({ id }) => {
     where: { id },
   })
 }
-
-export const Checklist = {
-  tasks: (_obj, { root }) =>
-    db.checklist.findUnique({ where: { id: root.id } }).tasks(),
-}

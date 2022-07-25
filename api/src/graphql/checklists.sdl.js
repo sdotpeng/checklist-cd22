@@ -2,7 +2,6 @@ export const schema = gql`
   type Checklist {
     id: Int!
     title: String!
-    tasks: [Task]!
   }
 
   type Query {
