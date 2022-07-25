@@ -10,7 +10,9 @@ export const QUERY = gql`
     task: task(id: $id) {
       id
       body
+      description
       completed
+      checklistId
     }
   }
 `
@@ -19,7 +21,9 @@ const UPDATE_TASK_MUTATION = gql`
     updateTask(id: $id, input: $input) {
       id
       body
+      description
       completed
+      checklistId
     }
   }
 `
@@ -42,7 +46,10 @@ export const Success = ({ task }) => {
   })
 
   const onSave = (input, id) => {
-    updateTask({ variables: { id, input } })
+    const castInput = Object.assign(input, {
+      checklistId: parseInt(input.checklistId),
+    })
+    updateTask({ variables: { id, input: castInput } })
   }
 
   return (

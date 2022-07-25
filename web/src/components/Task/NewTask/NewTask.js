@@ -24,7 +24,10 @@ const NewTask = () => {
   })
 
   const onSave = (input) => {
-    createTask({ variables: { input } })
+    const castInput = Object.assign(input, {
+      checklistId: parseInt(input.checklistId),
+    })
+    createTask({ variables: { input: castInput } })
   }
 
   return (

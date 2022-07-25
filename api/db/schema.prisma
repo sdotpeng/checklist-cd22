@@ -8,8 +8,17 @@ generator client {
   binaryTargets = "native"
 }
 
-model task {
-  id        Int     @id @default(autoincrement())
-  body      String
-  completed Boolean
+model Task {
+  id          Int        @id @default(autoincrement())
+  body        String
+  description String?
+  completed   Boolean
+  checklist   Checklist? @relation(fields: [checklistId], references: [id])
+  checklistId Int?
+}
+
+model Checklist {
+  id    Int    @id @default(autoincrement())
+  title String
+  tasks Task[]
 }

@@ -5,6 +5,7 @@ import {
   Label,
   TextField,
   CheckboxField,
+  NumberField,
   Submit,
 } from '@redwoodjs/forms'
 
@@ -42,6 +43,23 @@ const TaskForm = (props) => {
         <FieldError name="body" className="rw-field-error" />
 
         <Label
+          name="description"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Description
+        </Label>
+
+        <TextField
+          name="description"
+          defaultValue={props.task?.description}
+          className="rw-input"
+          errorClassName="rw-input rw-input-error"
+        />
+
+        <FieldError name="description" className="rw-field-error" />
+
+        <Label
           name="completed"
           className="rw-label"
           errorClassName="rw-label rw-label-error"
@@ -57,6 +75,23 @@ const TaskForm = (props) => {
         />
 
         <FieldError name="completed" className="rw-field-error" />
+
+        <Label
+          name="checklistId"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Checklist id
+        </Label>
+
+        <NumberField
+          name="checklistId"
+          defaultValue={props.task?.checklistId}
+          className="rw-input"
+          errorClassName="rw-input rw-input-error"
+        />
+
+        <FieldError name="checklistId" className="rw-field-error" />
 
         <div className="rw-button-group">
           <Submit disabled={props.loading} className="rw-button rw-button-blue">

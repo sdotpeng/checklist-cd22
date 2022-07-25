@@ -4,11 +4,11 @@ import { Link, routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
-import { QUERY } from 'src/components/Task/TasksCell'
+import { QUERY } from 'src/components/Checklist/ChecklistsCell'
 
-const DELETE_TASK_MUTATION = gql`
-  mutation DeleteTaskMutation($id: Int!) {
-    deleteTask(id: $id) {
+const DELETE_CHECKLIST_MUTATION = gql`
+  mutation DeleteChecklistMutation($id: Int!) {
+    deleteChecklist(id: $id) {
       id
     }
   }
@@ -53,10 +53,10 @@ const checkboxInputTag = (checked) => {
   return <input type="checkbox" checked={checked} disabled />
 }
 
-const TasksList = ({ tasks }) => {
-  const [deleteTask] = useMutation(DELETE_TASK_MUTATION, {
+const ChecklistsList = ({ checklists }) => {
+  const [deleteChecklist] = useMutation(DELETE_CHECKLIST_MUTATION, {
     onCompleted: () => {
-      toast.success('Task deleted')
+      toast.success('Checklist deleted')
     },
     onError: (error) => {
       toast.error(error.message)
@@ -69,8 +69,8 @@ const TasksList = ({ tasks }) => {
   })
 
   const onDeleteClick = (id) => {
-    if (confirm('Are you sure you want to delete task ' + id + '?')) {
-      deleteTask({ variables: { id } })
+    if (confirm('Are you sure you want to delete checklist ' + id + '?')) {
+      deleteChecklist({ variables: { id } })
     }
   }
 
@@ -81,44 +81,32 @@ const TasksList = ({ tasks }) => {
           <tr>
             <th>Id</th>
 
-            <th>Body</th>
-
-            <th>Description</th>
-
-            <th>Completed</th>
-
-            <th>Checklist id</th>
+            <th>Title</th>
 
             <th>&nbsp;</th>
           </tr>
         </thead>
 
         <tbody>
-          {tasks.map((task) => (
-            <tr key={task.id}>
-              <td>{truncate(task.id)}</td>
+          {checklists.map((checklist) => (
+            <tr key={checklist.id}>
+              <td>{truncate(checklist.id)}</td>
 
-              <td>{truncate(task.body)}</td>
-
-              <td>{truncate(task.description)}</td>
-
-              <td>{checkboxInputTag(task.completed)}</td>
-
-              <td>{truncate(task.checklistId)}</td>
+              <td>{truncate(checklist.title)}</td>
 
               <td>
                 <nav className="rw-table-actions">
                   <Link
-                    to={routes.task({ id: task.id })}
-                    title={'Show task ' + task.id + ' detail'}
+                    to={routes.checklist({ id: checklist.id })}
+                    title={'Show checklist ' + checklist.id + ' detail'}
                     className="rw-button rw-button-small"
                   >
                     Show
                   </Link>
 
                   <Link
-                    to={routes.editTask({ id: task.id })}
-                    title={'Edit task ' + task.id}
+                    to={routes.editChecklist({ id: checklist.id })}
+                    title={'Edit checklist ' + checklist.id}
                     className="rw-button rw-button-small rw-button-blue"
                   >
                     Edit
@@ -126,9 +114,9 @@ const TasksList = ({ tasks }) => {
 
                   <button
                     type="button"
-                    title={'Delete task ' + task.id}
+                    title={'Delete checklist ' + checklist.id}
                     className="rw-button rw-button-small rw-button-red"
-                    onClick={() => onDeleteClick(task.id)}
+                    onClick={() => onDeleteClick(checklist.id)}
                   >
                     Delete
                   </button>
@@ -142,4 +130,4 @@ const TasksList = ({ tasks }) => {
   )
 }
 
-export default TasksList
+export default ChecklistsList

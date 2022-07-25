@@ -2,7 +2,10 @@ export const schema = gql`
   type Task {
     id: Int!
     body: String!
+    description: String
     completed: Boolean!
+    checklist: Checklist
+    checklistId: Int
   }
 
   type Query {
@@ -12,12 +15,16 @@ export const schema = gql`
 
   input CreateTaskInput {
     body: String!
+    description: String
     completed: Boolean!
+    checklistId: Int
   }
 
   input UpdateTaskInput {
     body: String
+    description: String
     completed: Boolean
+    checklistId: Int
   }
 
   type Mutation {

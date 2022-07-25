@@ -4,9 +4,9 @@ import { Link, routes, navigate } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
-const DELETE_TASK_MUTATION = gql`
-  mutation DeleteTaskMutation($id: Int!) {
-    deleteTask(id: $id) {
+const DELETE_CHECKLIST_MUTATION = gql`
+  mutation DeleteChecklistMutation($id: Int!) {
+    deleteChecklist(id: $id) {
       id
     }
   }
@@ -45,11 +45,11 @@ const checkboxInputTag = (checked) => {
   return <input type="checkbox" checked={checked} disabled />
 }
 
-const Task = ({ task }) => {
-  const [deleteTask] = useMutation(DELETE_TASK_MUTATION, {
+const Checklist = ({ checklist }) => {
+  const [deleteChecklist] = useMutation(DELETE_CHECKLIST_MUTATION, {
     onCompleted: () => {
-      toast.success('Task deleted')
-      navigate(routes.tasks())
+      toast.success('Checklist deleted')
+      navigate(routes.checklists())
     },
     onError: (error) => {
       toast.error(error.message)
@@ -57,8 +57,8 @@ const Task = ({ task }) => {
   })
 
   const onDeleteClick = (id) => {
-    if (confirm('Are you sure you want to delete task ' + id + '?')) {
-      deleteTask({ variables: { id } })
+    if (confirm('Are you sure you want to delete checklist ' + id + '?')) {
+      deleteChecklist({ variables: { id } })
     }
   }
 
@@ -67,7 +67,7 @@ const Task = ({ task }) => {
       <div className="rw-segment">
         <header className="rw-segment-header">
           <h2 className="rw-heading rw-heading-secondary">
-            Task {task.id} Detail
+            Checklist {checklist.id} Detail
           </h2>
         </header>
 
@@ -76,27 +76,12 @@ const Task = ({ task }) => {
             <tr>
               <th>Id</th>
 
-              <td>{task.id}</td>
+              <td>{checklist.id}</td>
             </tr>
             <tr>
-              <th>Body</th>
+              <th>Title</th>
 
-              <td>{task.body}</td>
-            </tr>
-            <tr>
-              <th>Description</th>
-
-              <td>{task.description}</td>
-            </tr>
-            <tr>
-              <th>Completed</th>
-
-              <td>{checkboxInputTag(task.completed)}</td>
-            </tr>
-            <tr>
-              <th>Checklist id</th>
-
-              <td>{task.checklistId}</td>
+              <td>{checklist.title}</td>
             </tr>
           </tbody>
         </table>
@@ -104,7 +89,7 @@ const Task = ({ task }) => {
 
       <nav className="rw-button-group">
         <Link
-          to={routes.editTask({ id: task.id })}
+          to={routes.editChecklist({ id: checklist.id })}
           className="rw-button rw-button-blue"
         >
           Edit
@@ -113,7 +98,7 @@ const Task = ({ task }) => {
         <button
           type="button"
           className="rw-button rw-button-red"
-          onClick={() => onDeleteClick(task.id)}
+          onClick={() => onDeleteClick(checklist.id)}
         >
           Delete
         </button>
@@ -122,4 +107,4 @@ const Task = ({ task }) => {
   )
 }
 
-export default Task
+export default Checklist

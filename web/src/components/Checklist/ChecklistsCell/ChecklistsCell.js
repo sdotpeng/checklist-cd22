@@ -1,15 +1,12 @@
 import { Link, routes } from '@redwoodjs/router'
 
-import Tasks from 'src/components/Task/Tasks'
+import Checklists from 'src/components/Checklist/Checklists'
 
 export const QUERY = gql`
-  query FindTasks {
-    tasks {
+  query FindChecklists {
+    checklists {
       id
-      body
-      description
-      completed
-      checklistId
+      title
     }
   }
 `
@@ -19,9 +16,9 @@ export const Loading = () => <div>Loading...</div>
 export const Empty = () => {
   return (
     <div className="rw-text-center">
-      {'No tasks yet. '}
+      {'No checklists yet. '}
 
-      <Link to={routes.newTask()} className="rw-link">
+      <Link to={routes.newChecklist()} className="rw-link">
         {'Create one?'}
       </Link>
     </div>
@@ -32,6 +29,6 @@ export const Failure = ({ error }) => (
   <div className="rw-cell-error">{error.message}</div>
 )
 
-export const Success = ({ tasks }) => {
-  return <Tasks tasks={tasks} />
+export const Success = ({ checklists }) => {
+  return <Checklists checklists={checklists} />
 }

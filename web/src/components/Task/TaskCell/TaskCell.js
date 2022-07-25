@@ -5,7 +5,9 @@ export const QUERY = gql`
     task: task(id: $id) {
       id
       body
+      description
       completed
+      checklistId
     }
   }
 `
