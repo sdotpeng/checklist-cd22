@@ -12,15 +12,13 @@ const CREATE_TASK = gql`
 `
 
 const CreateTemplatePage = () => {
-
   const [create] = useMutation(CREATE_TASK)
-
   const onSubmit = (data) => {
     console.log(data)
     create({
       variables: {
         input: {
-          body: data.name,
+          body: data.body,
           description: data.description,
           completed: false
         }
@@ -35,22 +33,18 @@ const CreateTemplatePage = () => {
       <h1>Create a new template</h1>
 
       <div className="template">
-        <div className="template-header">
-          <h2 className="template-title">Building a car</h2>
-        </div>
+        <h2 className="template-title">Building a car</h2>
 
         <div className="template-body">
           <TaskListCell />
 
           <Form className="new-task-creator" onSubmit={onSubmit}>
-            <TextField name="name" placeholder="Enter task here"/>
-            <TextField name="description" placeholder="Enter description here"/>
+            <TextField name="body" placeholder="Enter task here" />
+            <TextField name="description" placeholder="Enter description here" />
             <Submit>+</Submit>
           </Form>
         </div>
       </div>
-
-      <button className="btn-submit-template" aria-label="create new task">Submit</button>
     </>
   )
 }
