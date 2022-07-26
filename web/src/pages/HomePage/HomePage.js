@@ -1,19 +1,34 @@
 import { Form, TextField, Submit } from '@redwoodjs/forms'
 import { Link, routes, navigate } from '@redwoodjs/router'
-import { MetaTags } from '@redwoodjs/web'
+import { MetaTags, useMutation } from '@redwoodjs/web'
+
+const CREATE_CHECKLIST = gql`
+  mutation CreateChecklistMutation($input: CreateChecklistInput!) {
+    createChecklist(input: $input) {
+      id
+    }
+  }
+`
 
 const HomePage = () => {
-
+  const [create] = useMutation(CREATE_CHECKLIST)
   const onSubmit = (data) => {
     console.log(data)
-    navigate(routes.createTemplate())
+    create({
+      variables: {
+        input: {
+          title: data.title
+        }
+      }
+    })
+    navigate(routes.createTemplate({ id: 1 })) // Change 1 to checklistId
   }
 
   return (
     <>
       <MetaTags title="Home" description="Home page" />
 
-      <Form className="new-task-creator" onSubmit={onSubmit} action="create-template" >
+      <Form className="new-template-creator" onSubmit={onSubmit} >
         <TextField name="title" placeholder="Create template here" />
         <Submit>+</Submit>
       </Form>

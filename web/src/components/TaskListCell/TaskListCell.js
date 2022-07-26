@@ -1,6 +1,6 @@
 export const QUERY = gql`
-query FindTaskListQuery {
-  taskList: tasks {
+query FindTaskListQuery($id: Int!) {
+  taskList: tasksChecklist(checklistId: $id) {
     body
     description
   }
