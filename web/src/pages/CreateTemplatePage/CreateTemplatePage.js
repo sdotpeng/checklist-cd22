@@ -2,6 +2,7 @@ import { Form, TextField, Submit } from '@redwoodjs/forms'
 import { Link, routes } from '@redwoodjs/router'
 import { MetaTags, useMutation } from '@redwoodjs/web'
 import TaskListCell, { QUERY } from 'src/components/TaskListCell'
+import TemplateListHeaderCell from 'src/components/TemplateListHeaderCell'
 
 const CREATE_TASK = gql`
   mutation CreateTaskMutation($input: CreateTaskInput!) {
@@ -35,7 +36,7 @@ const CreateTemplatePage = ({ id }) => {
       <h1>This is my checklist ID: {id}</h1>
 
       <div className="template">
-        <h2 className="template-title">Building a car</h2>
+        <TemplateListHeaderCell id={id}/>
 
         <div className="template-body">
           <TaskListCell id={id} />
