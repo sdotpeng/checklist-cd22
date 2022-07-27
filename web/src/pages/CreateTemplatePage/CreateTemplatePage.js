@@ -1,4 +1,4 @@
-import { Form, TextField, Submit } from '@redwoodjs/forms'
+import { Form, TextField, Submit, useForm } from '@redwoodjs/forms'
 import { Link, routes } from '@redwoodjs/router'
 import { MetaTags, useMutation } from '@redwoodjs/web'
 import TaskListCell, { QUERY } from 'src/components/TaskListCell'
@@ -13,7 +13,13 @@ const CREATE_TASK = gql`
 `
 
 const CreateTemplatePage = ({ id }) => {
-  const [create] = useMutation(CREATE_TASK)
+  const formMethods = useForm()
+
+  const [create, { loading }] = useMutation(CREATE_TASK, {
+    onCompleted: () => {
+      formMethods.reset()
+    }
+  })
   const onSubmit = (data) => {
     console.log(data)
     create({
@@ -41,10 +47,10 @@ const CreateTemplatePage = ({ id }) => {
         <div className="template-body">
           <TaskListCell id={id} />
 
-          <Form className="new-task-creator" onSubmit={onSubmit}>
+          <Form className="new-task-creator" onSubmit={onSubmit} formMethods={formMethods}>
             <TextField name="body" placeholder="Enter task here" />
             <TextField name="description" placeholder="Enter description here" />
-            <Submit>+</Submit>
+            <Submit disabled={loading}>+</Submit>
           </Form>
         </div>
       </div>
