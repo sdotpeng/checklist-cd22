@@ -1,7 +1,7 @@
 import { Form, TextField, Submit } from '@redwoodjs/forms'
 import { Link, routes } from '@redwoodjs/router'
 import { MetaTags, useMutation } from '@redwoodjs/web'
-import TaskListCell from 'src/components/TaskListCell'
+import TaskListCell, { QUERY } from 'src/components/TaskListCell'
 
 const CREATE_TASK = gql`
   mutation CreateTaskMutation($input: CreateTaskInput!) {
@@ -23,7 +23,8 @@ const CreateTemplatePage = ({ id }) => {
           completed: false,
           checklistId: id
         }
-      }
+      },
+      refetchQueries: [{ query: QUERY }, 'FindTaskListQuery' ]
     })
   }
 

@@ -11,17 +11,20 @@ const CREATE_CHECKLIST = gql`
 `
 
 const HomePage = () => {
-  const [create] = useMutation(CREATE_CHECKLIST)
-  const onSubmit = (data) => {
-    console.log(data)
+  const [create, { data }] = useMutation(CREATE_CHECKLIST)
+  const onSubmit = (inputData) => {
+    let checklistId
+    console.log(inputData) // Debugging
     create({
       variables: {
         input: {
-          title: data.title
+          title: inputData.title
         }
       }
     })
-    navigate(routes.createTemplate({ id: 1 })) // Change 1 to checklistId
+    checklistId = data.createChecklist.id
+    console.log(checklistId)
+    navigate(routes.createTemplate({ id: checklistId }))
   }
 
   return (
