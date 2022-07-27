@@ -18,7 +18,8 @@ model Task {
 }
 
 model Checklist {
-  id    Int    @id @default(autoincrement())
-  title String
-  tasks Task[]
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String?
+  tasks       Task[]
 }

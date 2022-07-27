@@ -2,6 +2,7 @@ export const schema = gql`
   type Checklist {
     id: Int!
     title: String!
+    description: String
   }
 
   type Query {
@@ -11,10 +12,12 @@ export const schema = gql`
 
   input CreateChecklistInput {
     title: String!
+    description: String
   }
 
   input UpdateChecklistInput {
     title: String
+    description: String
   }
 
   type Mutation {
