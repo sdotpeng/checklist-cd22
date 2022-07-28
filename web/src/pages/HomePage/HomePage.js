@@ -11,10 +11,14 @@ const CREATE_CHECKLIST = gql`
 `
 
 const HomePage = () => {
-  const [create, { data }] = useMutation(CREATE_CHECKLIST)
+  const [create, { data }] = useMutation(CREATE_CHECKLIST, {
+    onCompleted: () => {
+      let templateId = data.createChecklist.id
+      navigate(routes.createTemplate({ id: templateId }))
+    }
+  })
+
   const onSubmit = (inputData) => {
-    let checklistId
-    console.log(inputData) // Debugging
     create({
       variables: {
         input: {
@@ -22,9 +26,11 @@ const HomePage = () => {
         }
       }
     })
-    checklistId = data.createChecklist.id
-    console.log(checklistId)
-    navigate(routes.createTemplate({ id: checklistId }))
+  }
+
+  const createChecklist = () => {
+    // Need to copy data from template and put into checklist
+    //navigate(routes.checklist()) // Need to pass new id (Similar to creating a new template) and navigate to checklist page
   }
 
   return (
@@ -35,6 +41,11 @@ const HomePage = () => {
         <TextField name="title" placeholder="Create template here" />
         <Submit>+</Submit>
       </Form>
+
+      <Form className="new-checklist-form" onSubmit={createChecklist} >
+        <Submit>Testing create checklist</Submit>
+      </Form>
+
 
       <div className="all-templates">
         <h2 className="all-templates-title">Templates</h2>
