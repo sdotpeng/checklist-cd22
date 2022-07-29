@@ -32,45 +32,44 @@ query FindTemplateQuery($id: Int!) {
 const CreateTemplatePage = ({ id }) => {
   const formMethods = useForm()
 
-  // Replace error with data
-  const { error } = useQuery(GET_TEMPLATE)
-  const [create, { loading }] = useMutation(CREATE_TASK, {
+  const templateData = useQuery(GET_TEMPLATE, {
+    variables: {
+      id: id
+    }
+  }).data
+
+  const templateTasksData = useQuery(QUERY, {
+    variables: {
+      id: id
+    }
+  }).data
+
+  const [createTask, { loading }] = useMutation(CREATE_TASK, {
     onCompleted: () => {
       formMethods.reset()
     }
   })
 
-  // Essentially duplicate checklist
-  // Need to get this template's title and tasks
-  // After mutation function executed, user is taken to home
   const [createChecklist, { data }] = useMutation(CREATE_CHECKLIST, {
     onCompleted: () => {
-      // Test data
-      const taskList = [
-        { body: "temp1", completed: false, checklistId: 2 },
-        { body: "temp2", completed: false, checklistId: 2 },
-        { body: "temp3", completed: false, checklistId: 2 }
-      ]
-
-      // Replace with the template's tasks
-      taskList.forEach(() => (
-        create({
+      templateTasksData.taskList.forEach((task) => (
+        createTask({
           variables: {
             input: {
-              body: "New",
-              description: "New",
+              body: task.body,
+              description: task.description,
               completed: false,
               checklistId: data.createChecklist.id
             }
           }
         })
       ))
-      navigate(routes.home()) // Potentially change location?
+      navigate(routes.home())
     }
   })
 
   const onSubmit = (formData) => {
-    create({
+    createTask({
       variables: {
         input: {
           body: formData.body,
@@ -83,13 +82,12 @@ const CreateTemplatePage = ({ id }) => {
     })
   }
 
-  // Replace input with this template's data
   const onClick = () => {
     createChecklist({
       variables: {
         input: {
-          title: "Temp",
-          description: "Temp"
+          title: templateData.template.title,
+          description: templateData.template.description
         }
       }
     })
