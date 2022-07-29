@@ -28,11 +28,6 @@ const HomePage = () => {
     })
   }
 
-  const createChecklist = () => {
-    // Need to copy data from template and put into checklist
-    //navigate(routes.checklist()) // Need to pass new id (Similar to creating a new template) and navigate to checklist page
-  }
-
   return (
     <>
       <MetaTags title="Home" description="Home page" />
@@ -41,11 +36,6 @@ const HomePage = () => {
         <TextField name="title" placeholder="Create template here" />
         <Submit>+</Submit>
       </Form>
-
-      <Form className="new-checklist-form" onSubmit={createChecklist} >
-        <Submit>Testing create checklist</Submit>
-      </Form>
-
 
       <div className="all-templates">
         <h2 className="all-templates-title">Templates</h2>

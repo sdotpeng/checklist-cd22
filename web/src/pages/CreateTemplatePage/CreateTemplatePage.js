@@ -1,6 +1,6 @@
 import { Form, TextField, Submit, useForm } from '@redwoodjs/forms'
-import { Link, routes } from '@redwoodjs/router'
-import { MetaTags, useMutation } from '@redwoodjs/web'
+import { Link, routes, navigate } from '@redwoodjs/router'
+import { MetaTags, useMutation, useQuery } from '@redwoodjs/web'
 import TaskListCell, { QUERY } from 'src/components/TaskListCell'
 import TemplateListHeaderCell from 'src/components/TemplateListHeaderCell'
 
@@ -12,26 +12,84 @@ const CREATE_TASK = gql`
   }
 `
 
+const CREATE_CHECKLIST = gql`
+  mutation CreateChecklistMutation($input: CreateChecklistInput!) {
+    createChecklist(input: $input) {
+      id
+    }
+  }
+`
+
+const GET_TEMPLATE = gql`
+query FindTemplateQuery($id: Int!) {
+  template: checklist(id: $id) {
+    title
+    description
+  }
+}
+`
+
 const CreateTemplatePage = ({ id }) => {
   const formMethods = useForm()
 
-  const [create, { loading }] = useMutation(CREATE_TASK, {
+  const templateData = useQuery(GET_TEMPLATE, {
+    variables: {
+      id: id
+    }
+  }).data
+
+  const templateTasksData = useQuery(QUERY, {
+    variables: {
+      id: id
+    }
+  }).data
+
+  const [createTask, { loading }] = useMutation(CREATE_TASK, {
     onCompleted: () => {
       formMethods.reset()
     }
   })
-  const onSubmit = (data) => {
-    console.log(data)
-    create({
+
+  const [createChecklist, { data }] = useMutation(CREATE_CHECKLIST, {
+    onCompleted: () => {
+      templateTasksData.taskList.forEach((task) => (
+        createTask({
+          variables: {
+            input: {
+              body: task.body,
+              description: task.description,
+              completed: false,
+              checklistId: data.createChecklist.id
+            }
+          }
+        })
+      ))
+      navigate(routes.home())
+    }
+  })
+
+  const onSubmit = (formData) => {
+    createTask({
       variables: {
         input: {
-          body: data.body,
-          description: data.description,
+          body: formData.body,
+          description: formData.description,
           completed: false,
           checklistId: id
         }
       },
-      refetchQueries: [{ query: QUERY }, 'FindTaskListQuery' ]
+      refetchQueries: [{ query: QUERY }, 'FindTaskListQuery']
+    })
+  }
+
+  const onClick = () => {
+    createChecklist({
+      variables: {
+        input: {
+          title: templateData.template.title,
+          description: templateData.template.description
+        }
+      }
     })
   }
 
@@ -42,7 +100,7 @@ const CreateTemplatePage = ({ id }) => {
       <h1>This is my checklist ID: {id}</h1>
 
       <div className="template">
-        <TemplateListHeaderCell id={id}/>
+        <TemplateListHeaderCell id={id} />
 
         <div className="template-body">
           <TaskListCell id={id} />
@@ -54,6 +112,10 @@ const CreateTemplatePage = ({ id }) => {
           </Form>
         </div>
       </div>
+
+      <Form className="new-checklist-form" onSubmit={onClick} >
+        <Submit>Testing create checklist</Submit>
+      </Form>
     </>
   )
 }
