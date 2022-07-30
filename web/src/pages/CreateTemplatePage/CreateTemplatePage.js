@@ -23,6 +23,7 @@ const CREATE_CHECKLIST = gql`
 const GET_TEMPLATE = gql`
 query FindTemplateQuery($id: Int!) {
   template: checklist(id: $id) {
+    id
     title
     description
   }
