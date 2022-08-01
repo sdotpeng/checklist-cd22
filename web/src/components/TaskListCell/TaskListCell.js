@@ -32,14 +32,12 @@ export const Success = ({ taskList }) => {
 
   if (error) console.log(`Submission error! ${error.message}`)
 
-  const onSubmit = (formData) => {
-    let id = Number(formData.deleteId)
-    console.log(id) // Debug
+  const onDelete = (id) => {
     deleteTask({
       variables: {
         taskId: id
       },
-      refetchQueries: [{ query: QUERY }, 'FindTaskListQuery']
+      refetchQueries: ['FindTaskListQuery']
     })
   }
 
@@ -54,10 +52,14 @@ export const Success = ({ taskList }) => {
           {taskList.description}
           {taskList.id}
         </label>
-        <Form className="delete-task-form" onSubmit={onSubmit}>
-          <HiddenField name="deleteId" value={taskList.id} />
-          <Submit>Delete</Submit>
-        </Form>
+
+        <button
+          type="button"
+          className="rw-button rw-button-red"
+          onClick={() => onDelete(taskList.id)}
+        >
+          Delete
+        </button>
       </div>
     </taskList>
   ))
